@@ -80,7 +80,7 @@ ADMIN_USRNM = environ.get('ADMIN_USRNM','mrrighteous99') # WITHOUT @
 MAIN_CHANNEL_USRNM = environ.get('MAIN_CHANNEL_USRNM','blastwallztv') # WITHOUT @
 DEV_CHANNEL_USRNM = environ.get('DEV_CHANNEL_USRNM','mrrighteous99') # WITHOUT @
 LAZY_YT_HANDLE = environ.get('LAZY_YT_HANDLE','mr.righteousdev')  # WITHOUT @ [  add only handle - don't add full url  ] 
-MOVIE_GROUP_USERNAME = environ.get('MOVIE_GROUP_USERNAME', "https://t.me/+Yw5Xaer63RhjZTQ0") #[ without @ ]
+MOVIE_GROUP_USERNAME = environ.get('MOVIE_GROUP_USERNAME', "+Yw5Xaer63RhjZTQ0") #[ without @ ]
 
 # Url Shortner
 URL_MODE = is_enabled((environ.get("URL_MODE","False")), False)
@@ -95,7 +95,7 @@ MY_USERS = (my_users) if my_users else []
 # Online Stream and Download
 PORT = int(environ.get('PORT', 8080))
 NO_PORT = bool(environ.get('NO_PORT', False))
-APP_NAME = 'Sasha-bot'
+APP_NAME = 'mr-rts-mealone'
 if 'DYNO' in environ:
     ON_HEROKU = True
     APP_NAME = environ.get('APP_NAME')
