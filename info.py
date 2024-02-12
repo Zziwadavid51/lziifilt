@@ -95,7 +95,7 @@ MY_USERS = (my_users) if my_users else []
 # Online Stream and Download
 PORT = int(environ.get('PORT', 8080))
 NO_PORT = bool(environ.get('NO_PORT', False))
-APP_NAME = 'mr-rts-mealone'
+APP_NAME = 'mr-rts'
 if 'DYNO' in environ:
     ON_HEROKU = True
     APP_NAME = environ.get('APP_NAME')
