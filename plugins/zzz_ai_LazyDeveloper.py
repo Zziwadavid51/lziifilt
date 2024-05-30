@@ -17,7 +17,7 @@ async def lazy_answer(client, message):
                 parameters = {
                     'question': lazy_users_message,
                 }
-                response = requests.get("https://chatgpt.apinepdev.workers.dev", params=parameters)
+                response = requests.get(GPTAPI, params=parameters)
                 # response = openai.Completion.create(
                 #     model = "text-davinci-003",
                 #     prompt = lazy_users_message,
