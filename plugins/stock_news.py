@@ -17,6 +17,7 @@ stock_params = {
     "apikey": "demo"
 }
 
+
 stock_return = requests.get(STOCK_API, params=stock_params).json()
 print(stock_return)
 tod = dt.today()
