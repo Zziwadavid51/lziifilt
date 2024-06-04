@@ -15,6 +15,7 @@ import re
 import json
 import base64
 logger = logging.getLogger(__name__)
+import stock_news as sn
 
 BATCH_FILES = {}
 
@@ -615,3 +616,19 @@ async def save_template(client, message):
     template = message.text.split(" ", 1)[1]
     await save_group_settings(grp_id, 'template', template)
     await sts.edit(f"Successfully changed template for {title} to\n\n{template}")
+
+@Client.on_message(filters.command('stocks') & filters.user(ADMINS))
+async def send_stocks(bot, message):
+    msg = sn.finish_all()
+    btn_list = [
+                [
+                    InlineKeyboardButton(
+                        text="DELETE ❌", callback_data="close_data"
+                    )
+                ],
+            ]
+    await message.reply_text(
+        msg,
+        reply_markup=InlineKeyboardMarkup(btn_list)       
+    )
+
