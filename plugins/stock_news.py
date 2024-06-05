@@ -1,4 +1,8 @@
 import requests
+from info import ADMINS
+from pyrogram import Client, filters, enums
+from pyrogram.errors import ChatAdminRequired, FloodWait
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from datetime import datetime as dt, timedelta
 # import os
 # from twilio.rest import Client
@@ -18,13 +22,12 @@ stock_params = {
 }
 
 
-stock_return = requests.get(STOCK_API, params=stock_params).json()
-print(stock_return)
 tod = dt.today()
 today = tod.strftime("%d-%m-%Y")
 
 
-def get_stock_prices(stock_return, start_date, days_to_check=5):
+def get_stock_prices(start_date, days_to_check=5):
+    stock_return = requests.get(STOCK_API, params=stock_params).json()
     for i in range(1, days_to_check + 1):
         yesterday = (start_date - timedelta(days=i)).strftime("%Y-%m-%d")
         previous_day = (start_date - timedelta(days=i + 1)).strftime("%Y-%m-%d")
@@ -85,7 +88,23 @@ Headline: {headline}
 
 Brief: {content}
 """
+    return msg
 
+
+@Client.on_message(filters.command('stocks') & filters.user(ADMINS))
+async def send_stocks(bot, message):
+    msg = finish_all()
+    btn_list = [
+                [
+                    InlineKeyboardButton(
+                        text="DELETE ❌", callback_data="close_data"
+                    )
+                ],
+            ]
+    await message.reply_text(
+        msg,
+        reply_markup=InlineKeyboardMarkup(btn_list)       
+    )
 
     
 
