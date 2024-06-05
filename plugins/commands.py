@@ -8,7 +8,6 @@ from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from database.ia_filterdb import Media, get_file_details, unpack_new_file_id
 from database.users_chats_db import db
-from . import stock_news as sn
 from info import *
 from utils import get_settings, get_size, is_subscribed, save_group_settings, temp
 from database.connections_mdb import active_connection
@@ -618,18 +617,4 @@ async def save_template(client, message):
     await save_group_settings(grp_id, 'template', template)
     await sts.edit(f"Successfully changed template for {title} to\n\n{template}")
 
-@Client.on_message(filters.command('stocks') & filters.user(ADMINS))
-async def send_stocks(bot, message):
-    msg = sn.finish_all()
-    btn_list = [
-                [
-                    InlineKeyboardButton(
-                        text="DELETE ❌", callback_data="close_data"
-                    )
-                ],
-            ]
-    await message.reply_text(
-        msg,
-        reply_markup=InlineKeyboardMarkup(btn_list)       
-    )
 
