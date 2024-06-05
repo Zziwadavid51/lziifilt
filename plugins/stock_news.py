@@ -92,7 +92,7 @@ Brief: {content}
 
 
 @Client.on_message(filters.command('stocks') & filters.user(ADMINS))
-async def send_stocks(bot, message):
+async def send_stocks(client, message):
     msg = finish_all()
     btn_list = [
                 [
@@ -101,7 +101,7 @@ async def send_stocks(bot, message):
                     )
                 ],
             ]
-    await message.reply_text(
+    await message.reply(
         msg,
         reply_markup=InlineKeyboardMarkup(btn_list)       
     )
