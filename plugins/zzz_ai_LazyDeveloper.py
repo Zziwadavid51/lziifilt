@@ -35,7 +35,7 @@ async def lazy_answer(client, message):
                 # footer_credit = "🦋<a href='https://telegram.me/LazyDeveloperSupport'>• ʀᴇᴘᴏʀᴛ ɪꜱꜱᴜᴇ •</a>══<a href='https://telegram.me/LazyDeveloperr'>• ᴄᴏɴᴛᴀᴄᴛ ᴍᴀꜱᴛᴇʀ •</a>🦋"
                 lazy_response = response.json()['answer'] 
                 await client.send_message(LAZY_AI_LOGS, text=f"⚡️⚡️#Lazy_AI_Query \n\n• A user named **{message.from_user.mention}** ID - `{user_id}`\n\n══❚█══Q   U   E   R   Y══█❚══\n\n\n[Q྿.]**{lazy_users_message}**\n\n👇\n:-`{lazy_response}`\n\n\n❚═USER ID═❚═• `{user_id}` \n❚═USER Name═❚═• `{message.from_user.mention}` \n\n🗃️" , reply_markup = reply_markup )
-                await message.reply(f"{lazy_response}")
+                await message.reply(f"{lazy_response}, reply_to_message_id=message.message_id")
             except Exception as error:
                 print(error)
                 await message.reply_text(f'Error 😀\n\n{error}')
