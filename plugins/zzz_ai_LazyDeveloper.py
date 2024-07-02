@@ -6,7 +6,7 @@ from info import *
 # openai.api_key = OPENAI_API
 import requests
 
-@Client.on_message(filters.private & filters.command("ai"))
+@Client.on_message(filters.command("ai"))
 async def lazy_answer(client, message):
     if AI == True: 
         user_id = message.from_user.id
