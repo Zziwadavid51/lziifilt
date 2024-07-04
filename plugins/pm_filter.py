@@ -2120,7 +2120,15 @@ async def manual_filters(client, message, text=False):
 async def handle_file(client, message: Message):
     if message.from_user.id in ADMINS:
         user_files[message.from_user.id] = message
-        file_id = message.file_id
+        if message.document:
+            file_id = message.document.file_id
+        elif message.video:
+            file_id = message.video.file_id
+        elif message.audio:
+            file_id = message.audio.file_id
+        else:
+            await message.reply_text("Unsupported file type.")
+            return
         button = InlineKeyboardButton('▶ Gen Stream / Download Link', callback_data=f'generate_stream_link:{file_id}')
         reply_markup = InlineKeyboardMarkup([[button]])
         await message.reply_text("File received! Click the button below to generate the links.", reply_markup=reply_markup)
