@@ -59,6 +59,7 @@ FRESH = {}
 BUTTONS0 = {}
 BUTTONS1 = {}
 BUTTONS2 = {}
+user_files = {}
 
 # @Client.on_message(filters.group & filters.text & filters.incoming)
 # async def give_filter(client, message):
@@ -2045,75 +2046,82 @@ async def manual_filters(client, message, text=False):
                 break
     else:
         return False
-####### --------------------------  mr-righteouscodes  ----------------------------------------- #########
+####### --------------------------  mr-righteouscodes  ------------------------- #########
 # Dictionary to store user files temporarily
-user_files = {}
+
 
 # Handle receiving files
+# @Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
+# async def handle_file(client, message: Message):
+#     # Store the file information in the user_files dictionary
+#     if message.from_user.id in ADMINS:
+#         user_files[message.from_user.id] = message
+#         await message.reply_text("File received! Reply with /stream to generate the links.")
+
+# # Handle the /stream command
+# @Client.on_message(filters.private & filters.command("stream"))
+# async def gen_link(client, message: Message):
+#     if message.reply_to_message:
+#         user_id = message.from_user.id
+#         username = message.from_user.mention
+#         file_message = message.reply_to_message
+
+#         # Check if the replied message contains a file
+#         if file_message and file_message.media:
+#             file_id = file_message.file_id
+#             try:
+#                 # Send the cached media to the log channel
+#                 log_msg = await client.send_cached_media(
+#                     chat_id=LOG_CHANNEL,
+#                     file_id=file_id,
+#                 )
+                
+#                 fileName = quote_plus(get_name(log_msg))
+#                 lazy_stream = f"{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+#                 lazy_download = f"{URL}{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+
+#                 # Temporary message indicating processing
+#                 xo = await message.reply_text(f'🔐')
+#                 await asyncio.sleep(1)
+#                 await xo.delete()
+
+#                 # Send links to the log channel
+#                 await log_msg.reply_text(
+#                     text=f"•• ʟɪɴᴋ ɢᴇɴᴇʀᴀᴛᴇᴅ ꜰᴏʀ ɪᴅ #{user_id} \n•• ᴜꜱᴇʀɴᴀᴍᴇ : {username} \n\n•• ᖴᎥᒪᗴ Nᗩᗰᗴ : {fileName}",
+#                     quote=True,
+#                     disable_web_page_preview=True,
+#                     reply_markup=InlineKeyboardMarkup([
+#                         [InlineKeyboardButton("web Download", url=lazy_download),
+#                          InlineKeyboardButton('▶Stream online', url=lazy_stream)]
+#                     ])
+#                 )
+
+#                 # Send links to the user
+#                 await message.reply_text(
+#                     text="•• ʟɪɴᴋ ɢᴇɴᴇʀᴀᴛᴇᴅ ☠︎⚔",
+#                     quote=True,
+#                     disable_web_page_preview=True,
+#                     reply_markup=InlineKeyboardMarkup([
+#                         [InlineKeyboardButton("web Download", url=lazy_download),
+#                          InlineKeyboardButton('▶Stream online', url=lazy_stream)]
+#                     ])
+#                 )
+#             except Exception as e:
+#                 # Print the error message and send an alert to the user
+#                 print(e)
+#                 await message.reply(f"☣ something went wrong\n\n{e}")
+#                 return
+#         else:
+#             await message.reply("Please reply to a valid file message.")
+#     else:
+#         await message.reply("Please reply to the file message with the /stream command.")
+
 @Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
 async def handle_file(client, message: Message):
-    # Store the file information in the user_files dictionary
     if message.from_user.id in ADMINS:
         user_files[message.from_user.id] = message
-        await message.reply_text("File received! Reply with /stream to generate the links.")
-
-# Handle the /stream command
-@Client.on_message(filters.private & filters.command("stream"))
-async def gen_link(client, message: Message):
-    if message.reply_to_message:
-        user_id = message.from_user.id
-        username = message.from_user.mention
-        file_message = message.reply_to_message
-
-        # Check if the replied message contains a file
-        if file_message and file_message.media:
-            file_id = file_message.file_id
-            try:
-                # Send the cached media to the log channel
-                log_msg = await client.send_cached_media(
-                    chat_id=LOG_CHANNEL,
-                    file_id=file_id,
-                )
-                
-                fileName = quote_plus(get_name(log_msg))
-                lazy_stream = f"{URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
-                lazy_download = f"{URL}{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
-
-                # Temporary message indicating processing
-                xo = await message.reply_text(f'🔐')
-                await asyncio.sleep(1)
-                await xo.delete()
-
-                # Send links to the log channel
-                await log_msg.reply_text(
-                    text=f"•• ʟɪɴᴋ ɢᴇɴᴇʀᴀᴛᴇᴅ ꜰᴏʀ ɪᴅ #{user_id} \n•• ᴜꜱᴇʀɴᴀᴍᴇ : {username} \n\n•• ᖴᎥᒪᗴ Nᗩᗰᗴ : {fileName}",
-                    quote=True,
-                    disable_web_page_preview=True,
-                    reply_markup=InlineKeyboardMarkup([
-                        [InlineKeyboardButton("web Download", url=lazy_download),
-                         InlineKeyboardButton('▶Stream online', url=lazy_stream)]
-                    ])
-                )
-
-                # Send links to the user
-                await message.reply_text(
-                    text="•• ʟɪɴᴋ ɢᴇɴᴇʀᴀᴛᴇᴅ ☠︎⚔",
-                    quote=True,
-                    disable_web_page_preview=True,
-                    reply_markup=InlineKeyboardMarkup([
-                        [InlineKeyboardButton("web Download", url=lazy_download),
-                         InlineKeyboardButton('▶Stream online', url=lazy_stream)]
-                    ])
-                )
-            except Exception as e:
-                # Print the error message and send an alert to the user
-                print(e)
-                await message.reply(f"☣ something went wrong\n\n{e}")
-                return
-        else:
-            await message.reply("Please reply to a valid file message.")
-    else:
-        await message.reply("Please reply to the file message with the /stream command.")
-
-
+        file_id = message.file_id
+        button = InlineKeyboardButton('▶ Gen Stream / Download Link', callback_data=f'generate_stream_link:{file_id}')
+        reply_markup = InlineKeyboardMarkup([[button]])
+        await message.reply_text("File received! Click the button below to generate the links.", reply_markup=reply_markup)
 
