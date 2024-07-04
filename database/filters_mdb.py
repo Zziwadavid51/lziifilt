@@ -134,7 +134,7 @@ async def store_file_mapping(file_id, user_id, timestamp):
         }
 
         # Insert into MongoDB collection
-        await mycol.replace_one({"hashed_id": hashed_id}, mapping_data, upsert=True)
+        mycol.replace_one({"hashed_id": hashed_id}, mapping_data, upsert=True)
         return hashed_id  # Return the hashed ID for reference
     except Exception as e:
         print(f"Error storing file mapping in MongoDB: {e}")
@@ -144,7 +144,7 @@ async def store_file_mapping(file_id, user_id, timestamp):
 async def retrieve_file_id(hashed_id):  
     try:
         mycol = mydb["file_mappings"]
-        result = await mycol.find_one({"hashed_id": hashed_id})
+        result = mycol.find_one({"hashed_id": hashed_id})
         if result:
             return result["file_id"]
         else:
