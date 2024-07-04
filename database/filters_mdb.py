@@ -1,5 +1,8 @@
 import pymongo
 from pyrogram import enums
+import asyncio
+from motor.motor_asyncio import AsyncIOMotorClient
+from hashlib import md5
 from info import DATABASE_URI, DATABASE_NAME
 import logging
 logger = logging.getLogger(__name__)
@@ -113,3 +116,39 @@ async def filter_stats():
     totalcollections = len(collections)
 
     return totalcollections, totalcount
+
+# Function to store file mapping in MongoDB
+async def store_file_mapping(file_id, user_id, timestamp):
+    try:
+        mycol = mydb["file_mappings"]
+
+        # Generate hashed ID from file_id (example using MD5)
+        hashed_id = md5(file_id.encode()).hexdigest()
+
+        # Store mapping data
+        mapping_data = {
+            "hashed_id": hashed_id,
+            "file_id": file_id,
+            "user_id": user_id,
+            "timestamp": timestamp
+        }
+
+        # Insert into MongoDB collection
+        await mycol.replace_one({"hashed_id": hashed_id}, mapping_data, upsert=True)
+        return hashed_id  # Return the hashed ID for reference
+    except Exception as e:
+        print(f"Error storing file mapping in MongoDB: {e}")
+        return None
+
+# Function to retrieve file_id from hashed ID
+async def retrieve_file_id(hashed_id):  
+    try:
+        mycol = mydb["file_mappings"]
+        result = await mycol.find_one({"hashed_id": hashed_id})
+        if result:
+            return result["file_id"]
+        else:
+            return None
+    except Exception as e:
+        print(f"Error retrieving file ID from MongoDB: {e}")
+        return None
