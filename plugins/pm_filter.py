@@ -80,6 +80,26 @@ user_files = {}
 #         except Exception as e:
 #             logger.error(f"Chat Not verified : {e}") 
 
+@Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
+async def handle_file(client, message: Message):
+    if message.from_user.id in ADMINS:
+        user_files[message.from_user.id] = message
+        if message.document:
+            file_id = message.document.file_id
+            print(f"Received document file with ID: {file_id}")
+        elif message.video:
+            file_id = message.video.file_id
+            print(f"Received video file with ID: {file_id}")
+        elif message.audio:
+            file_id = message.audio.file_id
+            print(f"Received audio file with ID: {file_id}")
+        else:
+            await message.reply_text("Unsupported file type.")
+            return
+        button = InlineKeyboardButton('▶ Gen Stream / Download Link', callback_data=f'generate_stream_link:{file_id}')
+        reply_markup = InlineKeyboardMarkup([[button]])
+        await message.reply_text("File received! Click the button below to generate the links.", reply_markup=reply_markup)
+
 @Client.on_message(filters.group & filters.text & filters.incoming)
 async def give_filter(client, message):
     k = await manual_filters(client, message)
@@ -2116,20 +2136,5 @@ async def manual_filters(client, message, text=False):
 #     else:
 #         await message.reply("Please reply to the file message with the /stream command.")
 
-@Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
-async def handle_file(client, message: Message):
-    if message.from_user.id in ADMINS:
-        user_files[message.from_user.id] = message
-        if message.document:
-            file_id = message.document.file_id
-        elif message.video:
-            file_id = message.video.file_id
-        elif message.audio:
-            file_id = message.audio.file_id
-        else:
-            await message.reply_text("Unsupported file type.")
-            return
-        button = InlineKeyboardButton('▶ Gen Stream / Download Link', callback_data=f'generate_stream_link:{file_id}')
-        reply_markup = InlineKeyboardMarkup([[button]])
-        await message.reply_text("File received! Click the button below to generate the links.", reply_markup=reply_markup)
+
 
