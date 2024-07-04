@@ -2053,8 +2053,9 @@ user_files = {}
 @Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
 async def handle_file(client, message: Message):
     # Store the file information in the user_files dictionary
-    user_files[message.from_user.id] = message
-    await message.reply_text("File received! Reply with /stream to generate the links.")
+    if message.from_user.id in ADMINS:
+        user_files[message.from_user.id] = message
+        await message.reply_text("File received! Reply with /stream to generate the links.")
 
 # Handle the /stream command
 @Client.on_message(filters.private & filters.command("stream"))
