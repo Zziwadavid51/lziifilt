@@ -87,6 +87,7 @@ async def handle_file(client, message: Message):
         if message.document:
             file_id = message.document.file_id
             print(f"Received document file with ID: {file_id}")
+            await message.reply_text(f"File received! Received document file with ID: {file_id}.")
         elif message.video:
             file_id = message.video.file_id
             print(f"Received video file with ID: {file_id}")
@@ -96,9 +97,12 @@ async def handle_file(client, message: Message):
         else:
             await message.reply_text("Unsupported file type.")
             return
-        button = InlineKeyboardButton('▶ Gen Stream / Download Link', callback_data=f'generate_stream_link:{file_id}')
-        reply_markup = InlineKeyboardMarkup([[button]])
-        await message.reply_text("File received! Click the button below to generate the links.", reply_markup=reply_markup)
+        try:
+            button = InlineKeyboardButton('▶ Gen Stream / Download Link', callback_data=f'generate_stream_link:{file_id}')
+            reply_mkp = InlineKeyboardMarkup([[button]])
+            await message.reply_text("File received! Click the button below to generate the links.", reply_markup=reply_mkp)
+        except Exception as e:
+            print(f"{e}")
 
 @Client.on_message(filters.group & filters.text & filters.incoming)
 async def give_filter(client, message):
