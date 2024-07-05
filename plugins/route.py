@@ -6,7 +6,7 @@
 # Thank you LazyDeveloper for helping us in this Journey
 # 🥰  Thank you for giving me credit @LazyDeveloperr  🥰
 # for any error please contact me -> telegram@LazyDeveloperr or insta @LazyDeveloperr 
-
+#////
 
 import re
 import math
