@@ -73,16 +73,25 @@ async def send_toptier(client, message):
         playlist_id = pl1['id']
         playlist_location = pl1['external_urls']['spotify']
 
-        for song_name in song_names:
+        # Send an initial message
+        progress_message = await client.send_message(
+            chat_id=message.chat.id,
+            text="Creating playlist... Please wait."
+        )
+
+        for idx, song_name in enumerate(song_names, start=1):
             results = sp.search(q=f"track:{song_name}", type='track', limit=1)
             try:
-                song_id = results['tracks']['items'][-1]['id']
-                track = sp.track(track_id=song_id)
+                song_id = results['tracks']['items'][0]['id']
                 tracks_to_add.append(song_id)
-                print(track)
-            except IndexError as e:
-                print(f"{song_name} is not available on spotify")
-
+                # Update the progress message with the current song
+                await progress_message.edit_text(
+                    f"Processing song {idx}/{len(song_names)}: {song_name} (ID: {song_id})"
+                )
+            except IndexError:
+                await progress_message.edit_text(
+                    f"Processing song {idx}/{len(song_names)}: {song_name} is not available on Spotify"
+                )
         if tracks_to_add:        
             sp.user_playlist_add_tracks(user="31gwwiu2onm2fgqrju62vlsi4a5i",playlist_id=f"{playlist_id}",tracks=tracks_to_add)
 
