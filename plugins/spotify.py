@@ -61,7 +61,7 @@ async def send_toptier(client, message):
     client_secret=CLIENT_SECRET,
     redirect_uri="https://example.com",
     scope="user-library-read playlist-modify-public",
-    cache_path=".spotify_cache"  # Cache the token for future runs
+    #cache_path=".spotify_cache"  # Cache the token for future runs
 ))
 
         pl1 = sp.user_playlist_create(user="31gwwiu2onm2fgqrju62vlsi4a5i", 
