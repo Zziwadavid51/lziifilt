@@ -56,10 +56,13 @@ async def send_toptier(client, message):
         print(song_names)
         tracks_to_add = []
 
-        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CLIENT_ID,
-                                                    client_secret=CLIENT_SECRET,
-                                                    redirect_uri="https://example.com",
-                                                    scope="user-library-read playlist-modify-public"))
+        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+    client_id=CLIENT_ID,
+    client_secret=CLIENT_SECRET,
+    redirect_uri="https://example.com",
+    scope="user-library-read playlist-modify-public",
+    cache_path=".spotify_cache"  # Cache the token for future runs
+))
 
         pl1 = sp.user_playlist_create(user="31gwwiu2onm2fgqrju62vlsi4a5i", 
                                 name=f"{pl_name} - {full_date}", 
